@@ -8,6 +8,7 @@ import { AuthProvider } from './context/useAuth';
 import Login from './routes/login';
 import Menu from './routes/menu';
 import Register from './routes/register';
+import Dashboard from './routes/dashboard'; // ← Yeni eklenen
 
 import Layout from './components/layout';
 import PrivateRoute from './components/private_route';
@@ -19,6 +20,7 @@ function App() {
           <AuthProvider>
               <Routes>
                 <Route element={<PrivateRoute><Layout><Menu /></Layout></PrivateRoute>} path='/' /> 
+                <Route element={<PrivateRoute><Layout><Dashboard /></Layout></PrivateRoute>} path='/dashboard' />  {/* ← Yeni route */}
                 <Route element={<Layout><Login /></Layout>} path='/login' /> 
                 <Route element={<Layout><Register /></Layout>} path='/register' /> 
               </Routes>
