@@ -1,0 +1,416 @@
+MQTT broker'a baðlanýlýyor: localhost:1883
+MQTT broker'a baþarýyla baðlandý
+4 oda için MQTT topic'lerine abone olundu
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=20.2°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=24.5°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=22.2°C
+MQTT broker'a baðlanýlýyor: localhost:1883
+MQTT broker'a baþarýyla baðlandý
+4 oda için MQTT topic'lerine abone olundu
+MQTT broker'a baðlanýlýyor: localhost:1883
+MQTT broker'a baþarýyla baðlandý
+4 oda için MQTT topic'lerine abone olundu
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=24.8°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=24.8°C
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=20.9°C
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=19.7°C
+Batarya seviyesi güncellendi: Oda=Salon, Seviye=%85
+Batarya seviyesi güncellendi: Oda=Salon, Seviye=%85
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Batarya seviyesi güncellendi: Oda=Salon, Seviye=%85
+Batarya seviyesi güncellendi: Oda=Salon, Seviye=%85
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=19.6°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=21.5°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=23.8°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=19.6°C
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Batarya seviyesi güncellendi: Oda=Salon, Seviye=%85
+Batarya seviyesi güncellendi: Oda=Salon, Seviye=%85
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=24.8°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=22.7°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=24.8°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=24.8°C
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Batarya seviyesi güncellendi: Oda=Salon, Seviye=%85
+Batarya seviyesi güncellendi: Oda=Salon, Seviye=%85
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=19.8°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=22.7°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=19.8°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=19.9°C
+Batarya seviyesi güncellendi: Oda=Salon, Seviye=%85
+Batarya seviyesi güncellendi: Oda=Salon, Seviye=%85
+Batarya seviyesi güncellendi: Oda=Salon, Seviye=%85
+Batarya seviyesi güncellendi: Oda=Salon, Seviye=%85
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=24.8°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=24.5°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=20.2°C
+Yeni sýcaklýk verisi alýndý: Oda=Salon, Sýcaklýk=24.8°C
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+MQTT broker'a baðlanýlýyor: localhost:1883
+MQTT broker'a baþarýyla baðlandý
+4 oda için MQTT topic'lerine abone olundu
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=24.7°C, Nem=60.2%, Hareket=Yok
+Veritabanýna kayýt hatasý: database is locked
+MQTT mesaj iþleme hatasý: database is locked
+Traceback (most recent call last):
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 130, in on_message
+    self._process_cached_data(room_id)
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 173, in _process_cached_data
+    self._save_sensor_data_to_db(room_id, data)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 213, in _save_sensor_data_to_db
+    sensor_reading = SensorReading.objects.create(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 1020, in _save_table
+    results = self._do_insert(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 1061, in _do_insert
+    return manager._insert(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\query.py", line 1805, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\sql\compiler.py", line 1822, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+django.db.utils.OperationalError: database is locked
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=20.8°C, Nem=52.5%, Hareket=Var
+Veritabanýna kayýt hatasý: database is locked
+MQTT mesaj iþleme hatasý: database is locked
+Traceback (most recent call last):
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 130, in on_message
+    self._process_cached_data(room_id)
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 173, in _process_cached_data
+    self._save_sensor_data_to_db(room_id, data)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 213, in _save_sensor_data_to_db
+    sensor_reading = SensorReading.objects.create(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 1020, in _save_table
+    results = self._do_insert(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 1061, in _do_insert
+    return manager._insert(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\query.py", line 1805, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\sql\compiler.py", line 1822, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+django.db.utils.OperationalError: database is locked
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=21.2°C, Nem=46.9%, Hareket=Yok
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=20.8°C, Nem=64.7%, Hareket=Yok
+Veritabanýna kayýt hatasý: database is locked
+MQTT mesaj iþleme hatasý: database is locked
+Traceback (most recent call last):
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 130, in on_message
+    self._process_cached_data(room_id)
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 173, in _process_cached_data
+    self._save_sensor_data_to_db(room_id, data)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 213, in _save_sensor_data_to_db
+    sensor_reading = SensorReading.objects.create(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 1020, in _save_table
+    results = self._do_insert(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 1061, in _do_insert
+    return manager._insert(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\query.py", line 1805, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\sql\compiler.py", line 1822, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+django.db.utils.OperationalError: database is locked
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=19.1°C, Nem=67.3%, Hareket=Var
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=19.7°C, Nem=49.1%, Hareket=Yok
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=22.4°C, Nem=56.8%, Hareket=Yok
+Batarya seviyesi güncellendi: Oda=Salon, Seviye=%85
+Cihaz durumu iþleme hatasý: database is locked
+Batarya seviyesi güncellendi: Oda=Salon, Seviye=%85
+Veritabanýna kayýt hatasý: database is locked
+MQTT mesaj iþleme hatasý: database is locked
+Traceback (most recent call last):
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 130, in on_message
+    self._process_cached_data(room_id)
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 173, in _process_cached_data
+    self._save_sensor_data_to_db(room_id, data)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 213, in _save_sensor_data_to_db
+    sensor_reading = SensorReading.objects.create(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 1020, in _save_table
+    results = self._do_insert(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 1061, in _do_insert
+    return manager._insert(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\query.py", line 1805, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\sql\compiler.py", line 1822, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+django.db.utils.OperationalError: database is locked
+Veritabanýna kayýt hatasý: database is locked
+MQTT mesaj iþleme hatasý: database is locked
+Traceback (most recent call last):
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 130, in on_message
+    self._process_cached_data(room_id)
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 173, in _process_cached_data
+    self._save_sensor_data_to_db(room_id, data)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 213, in _save_sensor_data_to_db
+    sensor_reading = SensorReading.objects.create(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 1020, in _save_table
+    results = self._do_insert(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 1061, in _do_insert
+    return manager._insert(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\query.py", line 1805, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\sql\compiler.py", line 1822, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+django.db.utils.OperationalError: database is locked
+Veritabanýna kayýt hatasý: database is locked
+MQTT mesaj iþleme hatasý: database is locked
+Traceback (most recent call last):
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+sqlite3.OperationalError: database is locked
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 130, in on_message
+    self._process_cached_data(room_id)
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 173, in _process_cached_data
+    self._save_sensor_data_to_db(room_id, data)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\contextlib.py", line 79, in inner
+    return func(*args, **kwds)
+  File "C:\Users\Erhun\Desktop\Universite\4_sinif\donem_2\Yazýlým ve Nesneye Yönelik Tasarým\Proje\eco-heat-web-app\Django-React-Authentication\backend\sensors\mqtt_client.py", line 213, in _save_sensor_data_to_db
+    sensor_reading = SensorReading.objects.create(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\query.py", line 658, in create
+    obj.save(force_insert=True, using=self.db)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 814, in save
+    self.save_base(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 877, in save_base
+    updated = self._save_table(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 1020, in _save_table
+    results = self._do_insert(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\base.py", line 1061, in _do_insert
+    return manager._insert(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\query.py", line 1805, in _insert
+    return query.get_compiler(using=using).execute_sql(returning_fields)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\models\sql\compiler.py", line 1822, in execute_sql
+    cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 102, in execute
+    return super().execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 67, in execute
+    return self._execute_with_wrappers(
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 80, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\utils.py", line 91, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\utils.py", line 89, in _execute
+    return self.cursor.execute(sql, params)
+  File "C:\Users\Erhun\AppData\Local\Programs\Python\Python39\lib\site-packages\django\db\backends\sqlite3\base.py", line 328, in execute
+    return super().execute(query, params)
+django.db.utils.OperationalError: database is locked
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=19.7°C, Nem=61.4%, Hareket=Yok
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=20.4°C, Nem=42.5%, Hareket=Var
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=20.3°C, Nem=69.4%, Hareket=Var
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=24.5°C, Nem=44.5%, Hareket=Yok
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=24.7°C, Nem=69.6%, Hareket=Yok
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=24.6°C, Nem=62.6%, Hareket=Yok
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=21.0°C, Nem=56.7%, Hareket=Var
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=24.8°C, Nem=52.9%, Hareket=Yok
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=24.7°C, Nem=52.7%, Hareket=Yok
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=20.8°C, Nem=50.9%, Hareket=Var
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=20.5°C, Nem=63.2%, Hareket=Var
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=23.5°C, Nem=53.7%, Hareket=Yok
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=19.0°C, Nem=45.1%, Hareket=Var
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=21.2°C, Nem=69.8%, Hareket=Var
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=21.4°C, Nem=67.6%, Hareket=Var
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=22.1°C, Nem=63.0%, Hareket=Yok
+Baðlantý durumu güncellendi: Oda=Salon, Durum=stable
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=22.1°C, Nem=59.9%, Hareket=Var
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=21.6°C, Nem=61.9%, Hareket=Yok
+Sensör verisi kaydedildi: Oda=Salon, Sýcaklýk=20.1°C, Nem=50.1%, Hareket=Var
