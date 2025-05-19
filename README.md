@@ -19,3 +19,7 @@ python manage.py mqtt_client status
 python manage.py mqtt_client start
 
  python mqtt_simulator.py --broker localhost --port 1883 --interval 5 --rooms 
+
+
+ http://localhost:8000/api/sensors/rooms/
+ http://localhost:8000/api/sensors/rooms/6/room_details/
