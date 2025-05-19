@@ -10,3 +10,12 @@ python manage.py runserver
 cd frontend
 npm install
 npm start
+
+
+net start mosquitto
+sc query mosquitto
+
+python manage.py mqtt_client status
+python manage.py mqtt_client start
+
+ python mqtt_simulator.py --broker localhost --port 1883 --interval 5 --rooms 
