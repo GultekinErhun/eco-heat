@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'heating',
     'analytics',
     'schedules',
+    'django_apscheduler',
 ]
 
 MIDDLEWARE = [
