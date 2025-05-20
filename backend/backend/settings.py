@@ -48,8 +48,8 @@ INSTALLED_APPS = [
     'base',
     'sensors',
     'heating',
-    'scheduling',
     'analytics',
+    'schedules',
 ]
 
 MIDDLEWARE = [

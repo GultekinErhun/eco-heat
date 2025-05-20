@@ -23,11 +23,8 @@ urlpatterns = [
     # Mevcut base application, bu authenticationları icerir 
     path('api/', include('base.urls')),
     
-    # EcoHeat specific applications
     path('api/sensors/', include('sensors.urls')),
-    #path('api/scheduling/', include('scheduling.urls')),
-    #path('api/heating/', include('heating.urls')),
-    #path('api/analytics/', include('analytics.urls')),
+    path('api/schedules/', include('schedules.urls')),
     
     # DRF authentication
     #path('api-auth/', include('rest_framework.urls')),
