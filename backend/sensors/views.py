@@ -199,6 +199,20 @@ class RoomViewSet(viewsets.ModelViewSet):
         }
         
         return Response(response_data)
+    
+    @action(detail=True, methods=['get'])
+    def schedules(self, request, pk=None):
+        """Bir odanın programlarını döndürür"""
+        room = self.get_object()
+        
+        from schedules.models import RoomSchedule
+        from schedules.serializers import RoomScheduleSerializer
+        
+        # Bu odanın tüm programlarını al
+        room_schedules = RoomSchedule.objects.filter(room=room)
+        serializer = RoomScheduleSerializer(room_schedules, many=True)
+        
+        return Response(serializer.data)
 
 class SensorReadingViewSet(viewsets.ModelViewSet):
     serializer_class = SensorReadingSerializer

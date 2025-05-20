@@ -1,74 +1,88 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
-from sensors.models import Room
 
-class ScheduleType(models.Model):
-    """Program tipi (Varsayılan, İş, Tatil vb.)"""
+class Schedule(models.Model):
+    """
+    Bir zamanlama programı (default, work, holiday vb.)
+    """
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"{self.name} - {self.user.username}"
+        return self.name
 
-class ScheduleConfig(models.Model):
-    """Program konfigürasyonu"""
-    DAYS_CHOICES = [
-        ('all', 'Tüm Hafta'),
-        ('weekday', 'Hafta İçi'),
-        ('weekend', 'Hafta Sonu'),
-        ('custom', 'Özel Günler'),
-    ]
-    
-    schedule_type = models.ForeignKey(ScheduleType, on_delete=models.CASCADE, related_name="configs")
-    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name="schedule_configs")
-    days_mode = models.CharField(max_length=10, choices=DAYS_CHOICES, default='all')
-    desired_temperature = models.FloatField(default=22.0)  # Varsayılan 22°C
-    presence_based = models.BooleanField(default=False)  # Hareket sensörüne göre çalışsın mı?
-    is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+
+class Day(models.Model):
+    """
+    Haftanın günleri
+    """
+    id = models.AutoField(primary_key=True)
+    day = models.CharField(max_length=20)
     
     def __str__(self):
-        return f"{self.schedule_type.name} - {self.room.name}"
-    
-    class Meta:
-        unique_together = ('schedule_type', 'room')
+        return self.day
 
-class ScheduleDay(models.Model):
-    """Programın uygulanacağı özel günler (days_mode='custom' ise)"""
-    DAYS = [
-        (0, 'Pazartesi'),
-        (1, 'Salı'),
-        (2, 'Çarşamba'),
-        (3, 'Perşembe'),
-        (4, 'Cuma'),
-        (5, 'Cumartesi'),
-        (6, 'Pazar'),
-    ]
-    
-    schedule_config = models.ForeignKey(ScheduleConfig, on_delete=models.CASCADE, related_name="days")
-    day = models.IntegerField(choices=DAYS)
-    
-    def __str__(self):
-        return f"{self.schedule_config.schedule_type.name} - {self.get_day_display()}"
-    
-    class Meta:
-        unique_together = ('schedule_config', 'day')
 
-class TimeSlot(models.Model):
-    """Programdaki zaman dilimleri"""
-    TYPE_CHOICES = [
-        ('heating', 'Isıtma'),
-        ('fan', 'Fan'),
-    ]
-    
-    schedule_config = models.ForeignKey(ScheduleConfig, on_delete=models.CASCADE, related_name="time_slots")
-    type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+class Hour(models.Model):
+    """
+    Saat dilimleri
+    """
+    id = models.AutoField(primary_key=True)
     start_time = models.TimeField()
     end_time = models.TimeField()
-    is_active = models.BooleanField(default=True)  # Bu zaman diliminde aktif mi?
     
     def __str__(self):
-        return f"{self.schedule_config.schedule_type.name} - {self.type} - {self.start_time} to {self.end_time}"
+        return f"{self.start_time.strftime('%H:%M')} - {self.end_time.strftime('%H:%M')}"
+    
+    class Meta:
+        ordering = ['start_time']
+
+
+class ScheduleTime(models.Model):
+    """
+    Programların belirli gün ve saatlerdeki ayarları
+    """
+    id = models.AutoField(primary_key=True)
+    day_id = models.ForeignKey(Day, on_delete=models.CASCADE, related_name='schedule_times')
+    hour_id = models.ForeignKey(Hour, on_delete=models.CASCADE, related_name='schedule_times')
+    schedule_id = models.ForeignKey(Schedule, on_delete=models.CASCADE, related_name='schedule_times')
+    is_heating_active = models.BooleanField(default=True)
+    is_fan_active = models.BooleanField(default=False)
+    desired_temperature = models.FloatField(
+        validators=[MinValueValidator(5.0), MaxValueValidator(40.0)],
+        default=24.0
+    )
+    
+    def __str__(self):
+        return f"{self.schedule_id.name}: {self.day_id.day} {self.hour_id} - {self.desired_temperature}°C"
+    
+    class Meta:
+        unique_together = ['day_id', 'hour_id', 'schedule_id']
+
+
+class RoomSchedule(models.Model):
+    """
+    Oda ve programlar arasındaki ilişki - bir oda için sadece bir tane aktif program olabilir
+    """
+    id = models.AutoField(primary_key=True)
+    room_id = models.ForeignKey('sensors.Room', on_delete=models.CASCADE, related_name='room_schedules')
+    schedule_id = models.ForeignKey(Schedule, on_delete=models.CASCADE, related_name='room_schedules')
+    is_active = models.BooleanField(default=True)  # Default'u True yapabiliriz, çünkü bir oda için sadece bir program olacak
+    
+    def __str__(self):
+        return f"{self.room_id.name} - {self.schedule_id.name} - {'Active' if self.is_active else 'Inactive'}"
+    
+    class Meta:
+        unique_together = ['room_id']  # Sadece room_id için unique constraint, yani bir oda için sadece bir kayıt olabilir
+        
+    def save(self, *args, **kwargs):
+        """
+        Kaydetme işleminde eğer aktif olarak işaretlendiyse, diğer program ilişkilerini temizler
+        """
+        if self.is_active:
+            # Odanın diğer program ilişkilerini sil
+            RoomSchedule.objects.filter(room_id=self.room_id).delete()
+        
+        super().save(*args, **kwargs)

@@ -8,7 +8,7 @@ class SchedulesConfig(AppConfig):
     name = 'schedules'
 
     def ready(self):
-        from . import scheduler
-        scheduler.start()
+        #from . import scheduler
+        #scheduler.start()
         pass
 

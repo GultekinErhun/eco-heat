@@ -1,174 +1,245 @@
-from rest_framework import viewsets, status
+from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from django.utils import timezone
 from django.db import transaction
 
-from .models import ScheduleType, ScheduleConfig, ScheduleDay, TimeSlot
-from .serializers import (ScheduleTypeSerializer, ScheduleConfigSerializer, 
-                         ScheduleDaySerializer, TimeSlotSerializer,
-                         ScheduleConfigCreateSerializer)
+from .models import Schedule, Day, Hour, ScheduleTime, RoomSchedule
+from .serializers import (
+    ScheduleSerializer, DaySerializer, HourSerializer, ScheduleTimeSerializer,
+    RoomScheduleSerializer, DetailedScheduleSerializer
+)
 
-from sensors.mqtt_client import mqtt_client
 
-class ScheduleTypeViewSet(viewsets.ModelViewSet):
-    serializer_class = ScheduleTypeSerializer
-    permission_classes = [IsAuthenticated]
-    
-    def get_queryset(self):
-        # Sadece kullanıcının kendi program tiplerini getir
-        return ScheduleType.objects.filter(user=self.request.user)
-    
-    def perform_create(self, serializer):
-        # Program tipi oluştururken mevcut kullanıcıyı ata
-        serializer.save(user=self.request.user)
-    
-    @action(detail=True, methods=['post'])
-    def add_config(self, request, pk=None):
-        """Belirli bir program tipine yeni konfigürasyon ekler"""
-        schedule_type = self.get_object()
-        serializer = ScheduleConfigCreateSerializer(data=request.data)
-        
-        if serializer.is_valid():
-            try:
-                with transaction.atomic():
-                    # Konfigürasyonu oluştur
-                    config = serializer.save(schedule_type=schedule_type)
-                    
-                    # Başarılı yanıt döndür
-                    return Response({
-                        'success': True,
-                        'message': 'Program konfigürasyonu başarıyla eklendi',
-                        'config': ScheduleConfigSerializer(config).data
-                    }, status=status.HTTP_201_CREATED)
-            except Exception as e:
-                return Response({
-                    'success': False,
-                    'message': f'Program konfigürasyonu eklenirken hata oluştu: {str(e)}'
-                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-        
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    @action(detail=True, methods=['post'])
-    def apply_schedule(self, request, pk=None):
-        """Belirli bir program tipini tüm odalara uygular"""
-        schedule_type = self.get_object()
-        room_id = request.data.get('room_id')  # Opsiyonel, belirli bir odaya uygulamak için
-        
-        try:
-            # İlgili konfigürasyonları bul
-            configs = ScheduleConfig.objects.filter(schedule_type=schedule_type)
-            
-            if room_id:
-                configs = configs.filter(room_id=room_id)
-            
-            if not configs.exists():
-                return Response({
-                    'success': False,
-                    'message': 'Bu program tipi için konfigürasyon bulunamadı'
-                }, status=status.HTTP_404_NOT_FOUND)
-            
-            # Her konfigürasyon için gerekli MQTT komutlarını gönder
-            for config in configs:
-                # Isıtma için valf kontrolü
-                heating_slots = TimeSlot.objects.filter(
-                    schedule_config=config, 
-                    type='heating', 
-                    is_active=True
-                )
-                
-                current_time = timezone.localtime(timezone.now()).time()
-                heating_active = False
-                
-                # Şu anki saate göre ısıtma aktif mi kontrol et
-                for slot in heating_slots:
-                    if slot.start_time <= current_time <= slot.end_time:
-                        heating_active = True
-                        break
-                
-                # Valfi aç/kapa
-                mqtt_client.publish_valve_command(config.room.id, heating_active)
-                
-                # Fan kontrolü
-                fan_slots = TimeSlot.objects.filter(
-                    schedule_config=config, 
-                    type='fan', 
-                    is_active=True
-                )
-                
-                fan_active = False
-                
-                # Şu anki saate göre fan aktif mi kontrol et
-                for slot in fan_slots:
-                    if slot.start_time <= current_time <= slot.end_time:
-                        fan_active = True
-                        break
-                
-                # Fanı aç/kapa
-                mqtt_client.publish_fan_command(config.room.id, fan_active)
-            
-            return Response({
-                'success': True,
-                'message': 'Program başarıyla uygulandı',
-                'affected_rooms': [config.room.name for config in configs]
-            })
-            
-        except Exception as e:
-            return Response({
-                'success': False,
-                'message': f'Program uygulanırken hata oluştu: {str(e)}'
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class DayViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Günleri listelemek için ViewSet
+    """
+    queryset = Day.objects.all()
+    serializer_class = DaySerializer
+    permission_classes = [permissions.IsAuthenticated]
 
-class ScheduleConfigViewSet(viewsets.ModelViewSet):
-    serializer_class = ScheduleConfigSerializer
-    permission_classes = [IsAuthenticated]
-    
-    def get_queryset(self):
-        # Sadece kullanıcının kendi konfigürasyonlarını getir
-        return ScheduleConfig.objects.filter(schedule_type__user=self.request.user)
+
+class HourViewSet(viewsets.ModelViewSet):
+    """
+    Saat dilimlerini yönetmek için ViewSet
+    """
+    queryset = Hour.objects.all()
+    serializer_class = HourSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class ScheduleViewSet(viewsets.ModelViewSet):
+    """
+    Programları yönetmek için ViewSet
+    """
+    queryset = Schedule.objects.all()
+    serializer_class = ScheduleSerializer
+    permission_classes = [permissions.IsAuthenticated]
     
     def get_serializer_class(self):
-        if self.action == 'create':
-            return ScheduleConfigCreateSerializer
-        return ScheduleConfigSerializer
+        if self.action == 'retrieve' or self.action == 'detailed':
+            return DetailedScheduleSerializer
+        return ScheduleSerializer
+    
+    @action(detail=True, methods=['get'])
+    def detailed(self, request, pk=None):
+        """
+        Programın detaylı görüntüsünü günlere göre gruplanmış zaman dilimleriyle al
+        """
+        schedule = self.get_object()
+        serializer = self.get_serializer(schedule)
+        return Response(serializer.data)
     
     @action(detail=True, methods=['post'])
-    def add_time_slot(self, request, pk=None):
-        """Bir konfigürasyona yeni zaman dilimi ekler"""
-        config = self.get_object()
-        serializer = TimeSlotSerializer(data=request.data)
+    def assign_to_room(self, request, pk=None):
+        """
+        Bir programı bir odaya ata 
+        - Odaya önceden atanmış program varsa, o program kaldırılır
+        """
+        schedule = self.get_object()
+        room_id = request.data.get('room_id')
         
-        if serializer.is_valid():
-            serializer.save(schedule_config=config)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if not room_id:
+            return Response({"error": "Room ID is required"}, status=status.HTTP_400_BAD_REQUEST)
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            # Önce odaya ait eski programları temizle
+            RoomSchedule.objects.filter(room_id=room_id).delete()
+            
+            # Yeni program atamasını oluştur
+            room_schedule = RoomSchedule.objects.create(
+                room_id_id=room_id,
+                schedule_id=schedule,
+                is_active=True
+            )
+            
+            serializer = RoomScheduleSerializer(room_schedule)
+            return Response(serializer.data)
+        
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     
     @action(detail=True, methods=['post'])
-    def add_day(self, request, pk=None):
-        """Bir konfigürasyona özel gün ekler"""
-        config = self.get_object()
-        serializer = ScheduleDaySerializer(data=request.data)
+    @transaction.atomic
+    def update_time_slots(self, request, pk=None):
+        """
+        Bir program için zaman dilimlerini güncelle veya oluştur
         
-        if serializer.is_valid():
-            serializer.save(schedule_config=config)
+        Beklenen format:
+        {
+            "time_slots": [
+                {
+                    "day_id": 1,
+                    "hour_id": 1,
+                    "temperature": 24.5,
+                    "is_heating_active": true,
+                    "is_fan_active": false
+                },
+                ...
+            ]
+        }
+        """
+        schedule = self.get_object()
+        time_slots_data = request.data.get('time_slots', [])
+        
+        if not time_slots_data:
+            return Response({"error": "No time slots provided"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        created_time_slots = []
+        
+        try:
+            # Bu program için mevcut zaman dilimlerini temizle
+            ScheduleTime.objects.filter(schedule_id=schedule).delete()
+            
+            for slot_data in time_slots_data:
+                # Schedule Time oluştur
+                schedule_time = ScheduleTime.objects.create(
+                    day_id_id=slot_data['day_id'],
+                    hour_id_id=slot_data['hour_id'],
+                    schedule_id=schedule,
+                    desired_temperature=slot_data.get('temperature', 24.0),
+                    is_heating_active=slot_data.get('is_heating_active', True),
+                    is_fan_active=slot_data.get('is_fan_active', False)
+                )
+                
+                created_time_slots.append(schedule_time)
+            
+            serializer = ScheduleTimeSerializer(created_time_slots, many=True)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
-class TimeSlotViewSet(viewsets.ModelViewSet):
-    serializer_class = TimeSlotSerializer
-    permission_classes = [IsAuthenticated]
-    
-    def get_queryset(self):
-        # Sadece kullanıcının kendi zaman dilimlerini getir
-        return TimeSlot.objects.filter(schedule_config__schedule_type__user=self.request.user)
 
-class ScheduleDayViewSet(viewsets.ModelViewSet):
-    serializer_class = ScheduleDaySerializer
-    permission_classes = [IsAuthenticated]
+class ScheduleTimeViewSet(viewsets.ModelViewSet):
+    """
+    Program-zaman ayarlarını yönetmek için ViewSet
+    """
+    queryset = ScheduleTime.objects.all()
+    serializer_class = ScheduleTimeSerializer
+    permission_classes = [permissions.IsAuthenticated]
     
-    def get_queryset(self):
-        # Sadece kullanıcının kendi özel günlerini getir
-        return ScheduleDay.objects.filter(schedule_config__schedule_type__user=self.request.user)
+    @action(detail=False, methods=['get'])
+    def by_schedule(self, request):
+        """
+        Program ID'sine göre program-zaman ayarlarını getir
+        """
+        schedule_id = request.query_params.get('schedule_id')
+        if not schedule_id:
+            return Response({"error": "Schedule ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        schedule_times = ScheduleTime.objects.filter(schedule_id=schedule_id)
+        serializer = self.get_serializer(schedule_times, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def by_day(self, request):
+        """
+        Gün ID'sine göre program-zaman ayarlarını getir
+        """
+        day_id = request.query_params.get('day_id')
+        schedule_id = request.query_params.get('schedule_id')
+        
+        if not day_id:
+            return Response({"error": "Day ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+            
+        queryset = ScheduleTime.objects.filter(day_id=day_id)
+        
+        if schedule_id:
+            queryset = queryset.filter(schedule_id=schedule_id)
+            
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class RoomScheduleViewSet(viewsets.ModelViewSet):
+    """
+    Oda-program atamalarını yönetmek için ViewSet
+    """
+    queryset = RoomSchedule.objects.all()
+    serializer_class = RoomScheduleSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def create(self, request, *args, **kwargs):
+        """
+        Yeni bir oda-program ilişkisi oluştur 
+        - Bir odaya yeni bir program atandığında, o odanın eski programı otomatik olarak kaldırılır
+        """
+        room_id = request.data.get('room_id')
+        schedule_id = request.data.get('schedule_id')
+        
+        if not room_id or not schedule_id:
+            return Response({"error": "Room ID and Schedule ID are required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            # Önce odaya ait eski programları temizle
+            RoomSchedule.objects.filter(room_id=room_id).delete()
+            
+            # Yeni program atamasını oluştur
+            room_schedule = RoomSchedule.objects.create(
+                room_id_id=room_id,
+                schedule_id_id=schedule_id,
+                is_active=True
+            )
+            
+            serializer = self.get_serializer(room_schedule)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
+    def update(self, request, *args, **kwargs):
+        """
+        Bir oda-program ilişkisini güncelle
+        - Aktif değişikliği yapmak istediğimizde bu kullanılır
+        """
+        instance = self.get_object()
+        
+        # is_active değeri değiştirilmek isteniyorsa
+        if 'is_active' in request.data and request.data['is_active']:
+            # Diğer program ilişkilerini temizle
+            RoomSchedule.objects.filter(room_id=instance.room_id).exclude(pk=instance.pk).delete()
+        
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def by_room(self, request):
+        """
+        Oda ID'sine göre programı getir
+        - Bir oda için sadece bir aktif program olacak
+        """
+        room_id = request.query_params.get('room_id')
+        if not room_id:
+            return Response({"error": "Room ID is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            # Odanın aktif programını buluyoruz
+            room_schedule = RoomSchedule.objects.get(room_id=room_id)
+            serializer = self.get_serializer(room_schedule)
+            return Response(serializer.data)
+        except RoomSchedule.DoesNotExist:
+            return Response({"message": "No schedule assigned to this room"}, status=status.HTTP_404_NOT_FOUND)
