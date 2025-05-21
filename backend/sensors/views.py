@@ -1,5 +1,5 @@
 from rest_framework import viewsets, status
-from rest_framework.decorators import action
+from rest_framework.decorators import action,api_view
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.utils import timezone
@@ -75,55 +75,167 @@ class RoomViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['post'])
     def control_valve(self, request, pk=None):
-        """Valf kontrolü için MQTT komutu gönderir"""
-        room = self.get_object()
-        valve_status = request.data.get('valve_status', False)
-        
-        # Veri tabanında güncelle
-        device_status, created = DeviceStatus.objects.get_or_create(room=room)
-        device_status.valve_status = valve_status
-        device_status.save()
-        
-        # MQTT üzerinden komutu gönder
-        success = mqtt_client.publish_valve_command(room.id, valve_status)
-        
-        if success:
+        """
+        Oda için vana kontrolü - 3 mod desteklenir:
+        1. ON (manuel açık)
+        2. OFF (manuel kapalı)
+        3. SCHEDULE (program kontrolü)
+        """
+        try:
+            room = self.get_object()  # Bu, pk parametresini kullanarak Room nesnesini otomatik olarak alır
+            
+            # Kullanıcının yetkisini kontrol et (zaten get_queryset ile filtrelenmiş olsa da)
+            if room.user != request.user and not request.user.is_staff:
+                return Response({"error": "Bu odayı kontrol etme yetkiniz yok"}, status=403)
+            
+            # Cihaz durumunu al veya oluştur
+            device_status, created = DeviceStatus.objects.get_or_create(room=room)
+            
+            # Request parametrelerini al
+            mode = request.data.get('mode', '').lower()  # "on", "off", "schedule"
+            
+            if mode not in ['on', 'off', 'schedule']:
+                return Response({
+                    "error": "Geçersiz mod. Desteklenen modlar: 'on', 'off', 'schedule'"
+                }, status=400)
+            
+            # MQTT istemcisini başlat
+            if not mqtt_client.is_connected:
+                mqtt_client.connect()
+            
+            # Modu işle
+            if mode == 'on':
+                # Manuel açık modu
+                device_status.heating_control_mode = 'manual'
+                device_status.valve_status = True
+                
+                # MQTT komutu gönder
+                mqtt_client.publish_valve_command(room.id, True)
+                
+                message = "Isıtma sistemi manuel olarak açıldı"
+            
+            elif mode == 'off':
+                # Manuel kapalı modu
+                device_status.heating_control_mode = 'manual'
+                device_status.valve_status = False
+                
+                # MQTT komutu gönder
+                mqtt_client.publish_valve_command(room.id, False)
+                
+                message = "Isıtma sistemi manuel olarak kapatıldı"
+            
+            elif mode == 'schedule':
+                # Program kontrolü modu
+                device_status.heating_control_mode = 'schedule'
+                
+                # Aktif programı kontrol et
+                from schedules.models import RoomSchedule
+                has_active_schedule = RoomSchedule.objects.filter(room_id=room, is_active=True).exists()
+                
+                if not has_active_schedule:
+                    return Response({
+                        "success": False,
+                        "message": "Bu oda için aktif program bulunamadı. Lütfen önce bir program seçin."
+                    }, status=400)
+                
+                message = "Isıtma sistemi program kontrolüne alındı"
+            
+            # Değişiklikleri kaydet
+            device_status.save()
+            
             return Response({
-                'success': True,
-                'message': f"Valf {'açma' if valve_status else 'kapama'} komutu gönderildi",
-                'valve_status': valve_status
+                "success": True,
+                "message": message,
+                "room_id": room.id,
+                "mode": mode,
+                "heating_status": "on" if device_status.valve_status else "off",
+                "control_mode": device_status.heating_control_mode
             })
-        else:
-            return Response({
-                'success': False,
-                'message': 'MQTT komutu gönderilemedi'
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+            
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
+    
     @action(detail=True, methods=['post'])
     def control_fan(self, request, pk=None):
-        """Fan kontrolü için MQTT komutu gönderir"""
-        room = self.get_object()
-        fan_status = request.data.get('fan_status', False)
-        
-        # Veri tabanında güncelle
-        device_status, created = DeviceStatus.objects.get_or_create(room=room)
-        device_status.fan_status = fan_status
-        device_status.save()
-        
-        # MQTT üzerinden komutu gönder
-        success = mqtt_client.publish_fan_command(room.id, fan_status)
-        
-        if success:
+        """
+        Oda için fan kontrolü - 3 mod desteklenir:
+        1. ON (manuel açık)
+        2. OFF (manuel kapalı)
+        3. SCHEDULE (program kontrolü)
+        """
+        try:
+            room = self.get_object()
+            
+            # Kullanıcının yetkisini kontrol et
+            if room.user != request.user and not request.user.is_staff:
+                return Response({"error": "Bu odayı kontrol etme yetkiniz yok"}, status=403)
+            
+            # Cihaz durumunu al veya oluştur
+            device_status, created = DeviceStatus.objects.get_or_create(room=room)
+            
+            # Request parametrelerini al
+            mode = request.data.get('mode', '').lower()  # "on", "off", "schedule"
+            
+            if mode not in ['on', 'off', 'schedule']:
+                return Response({
+                    "error": "Geçersiz mod. Desteklenen modlar: 'on', 'off', 'schedule'"
+                }, status=400)
+            
+            # MQTT istemcisini başlat
+            if not mqtt_client.is_connected:
+                mqtt_client.connect()
+            
+            # Modu işle
+            if mode == 'on':
+                # Manuel açık modu
+                device_status.fan_control_mode = 'manual'
+                device_status.fan_status = True
+                
+                # MQTT komutu gönder
+                mqtt_client.publish_fan_command(room.id, True)
+                
+                message = "Fan sistemi manuel olarak açıldı"
+            
+            elif mode == 'off':
+                # Manuel kapalı modu
+                device_status.fan_control_mode = 'manual'
+                device_status.fan_status = False
+                
+                # MQTT komutu gönder
+                mqtt_client.publish_fan_command(room.id, False)
+                
+                message = "Fan sistemi manuel olarak kapatıldı"
+            
+            elif mode == 'schedule':
+                # Program kontrolü modu
+                device_status.fan_control_mode = 'schedule'
+                
+                # Aktif programı kontrol et
+                from schedules.models import RoomSchedule
+                has_active_schedule = RoomSchedule.objects.filter(room_id=room, is_active=True).exists()
+                
+                if not has_active_schedule:
+                    return Response({
+                        "success": False,
+                        "message": "Bu oda için aktif program bulunamadı. Lütfen önce bir program seçin."
+                    }, status=400)
+                
+                message = "Fan sistemi program kontrolüne alındı"
+            
+            # Değişiklikleri kaydet
+            device_status.save()
+            
             return Response({
-                'success': True,
-                'message': f"Fan {'açma' if fan_status else 'kapama'} komutu gönderildi",
-                'fan_status': fan_status
+                "success": True,
+                "message": message,
+                "room_id": room.id,
+                "mode": mode,
+                "fan_status": "on" if device_status.fan_status else "off",
+                "control_mode": device_status.fan_control_mode
             })
-        else:
-            return Response({
-                'success': False,
-                'message': 'MQTT komutu gönderilemedi'
-            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
         
 
     @action(detail=True, methods=['get'])

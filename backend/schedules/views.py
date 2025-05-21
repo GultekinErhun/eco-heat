@@ -1,6 +1,7 @@
-from rest_framework import viewsets, permissions, status
+from rest_framework import viewsets, permissions, status 
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.db import transaction
 
 from .models import Schedule, Day, Hour, ScheduleTime, RoomSchedule
@@ -8,6 +9,8 @@ from .serializers import (
     ScheduleSerializer, DaySerializer, HourSerializer, ScheduleTimeSerializer,
     RoomScheduleSerializer, DetailedScheduleSerializer
 )
+
+from .decision_engine import decision_engine
 
 
 class DayViewSet(viewsets.ReadOnlyModelViewSet):
@@ -130,6 +133,42 @@ class ScheduleViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    @action(detail=False, methods=['get', 'post'], permission_classes=[IsAdminUser])
+    def decision_engine_status(self, request):
+        if request.method == 'GET':
+            # Mevcut durumu döndür
+            return Response({
+                'running': decision_engine.running,
+                'check_interval': decision_engine.check_interval,
+                'temperature_threshold': decision_engine.temperature_threshold
+            })
+        elif request.method == 'POST':
+            # Durumu değiştir
+            action = request.data.get('action')
+            if action == 'start':
+                decision_engine.start()
+                return Response({'status': 'Decision Engine başlatıldı'})
+            elif action == 'stop':
+                decision_engine.stop()
+                return Response({'status': 'Decision Engine durduruldu'})
+            elif action == 'update_settings':
+                # Ayarları güncelle
+                check_interval = request.data.get('check_interval')
+                temperature_threshold = request.data.get('temperature_threshold')
+                
+                if check_interval is not None:
+                    decision_engine.check_interval = int(check_interval)
+                
+                if temperature_threshold is not None:
+                    decision_engine.temperature_threshold = float(temperature_threshold)
+                
+                return Response({
+                    'status': 'Ayarlar güncellendi',
+                    'check_interval': decision_engine.check_interval,
+                    'temperature_threshold': decision_engine.temperature_threshold
+                })
+            else:
+                return Response({'error': 'Geçersiz eylem'}, status=status.HTTP_400_BAD_REQUEST)
 
 class ScheduleTimeViewSet(viewsets.ModelViewSet):
     """

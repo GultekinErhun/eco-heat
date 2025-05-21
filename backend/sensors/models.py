@@ -36,3 +36,23 @@ class DeviceStatus(models.Model):
     class Meta:
         verbose_name = "Device Status"
         verbose_name_plural = "Device Statuses" 
+        
+    # Kontrol modu seçenekleri
+    CONTROL_MODES = [
+        ('manual', 'Manuel Kontrol'),
+        ('schedule', 'Program Kontrolü'),
+    ]
+    
+    heating_control_mode = models.CharField(
+        max_length=10,
+        choices=CONTROL_MODES,
+        default='manual',
+        verbose_name="Isıtma Kontrol Modu"
+    )
+    
+    fan_control_mode = models.CharField(
+        max_length=10,
+        choices=CONTROL_MODES,
+        default='manual',
+        verbose_name="Fan Kontrol Modu"
+    )

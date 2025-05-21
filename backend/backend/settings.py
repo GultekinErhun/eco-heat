@@ -91,6 +91,13 @@ MQTT_BROKER_PORT = 1883
 MQTT_USERNAME = 'erhun'  # Eğer authentication gerekiyorsa
 MQTT_PASSWORD = '123'  # Eğer authentication gerekiyorsa
 
+
+# Decision Engine ayarları
+DECISION_ENGINE = {
+    'CHECK_INTERVAL': 60,  # saniye
+    'TEMPERATURE_THRESHOLD': 2.0,  # ±°C
+}
+
 # Logging ayarları
 LOGGING = {
     'version': 1,
