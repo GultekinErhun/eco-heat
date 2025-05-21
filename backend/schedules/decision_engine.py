@@ -107,13 +107,25 @@ class DecisionEngine:
         
         # Eğer aktif program yoksa, atla
         if not active_schedule:
-            logger.warning(f"Oda {room.id} için aktif program bulunamadı, atlanıyor")
+            logger.warning(f"Oda {room.id} için aktif program bulunamadı, sistemleri kapatıyorum")
+            # Program yoksa, ısıtma ve fanları kapat
+            if heating_schedule_active:
+                self._control_heating(room.id, False)
+            if fan_schedule_active:
+                self._control_fan(room.id, False)
             return
         
         # Şu anki gün ve saat için program ayarlarını bul
         current_time_slot = self._get_current_time_slot(active_schedule)
+        
+        # Eğer şu an için bir zaman dilimi bulunamazsa, sistemleri kapat
         if not current_time_slot:
-            logger.warning(f"Oda {room.id} için aktif zaman dilimi bulunamadı, atlanıyor")
+            logger.info(f"Oda {room.id} için aktif zaman dilimi bulunamadı, sistemleri kapatıyorum")
+            # Aktif zaman dilimi yoksa, ısıtma ve fanları kapat
+            if heating_schedule_active:
+                self._control_heating(room.id, False)
+            if fan_schedule_active:
+                self._control_fan(room.id, False)
             return
         
         # Sıcaklık hedefini ve fan/ısıtma ayarlarını al
@@ -145,23 +157,17 @@ class DecisionEngine:
         
         # Fan kontrolü (sadece schedule modundaysa)
         if fan_schedule_active:
-            # Fan durumunu programdan al
-            if is_fan_active != device_status.fan_status:
-                self._control_fan(room.id, is_fan_active)
+            if is_fan_active:
+                # Fan durumunu programdan al
+                self._control_fan(room.id, True)
+            else:
+                # Fan programda kapalı
+                self._control_fan(room.id, False)
             
             logger.info(
                 f"Oda {room.id} fan - Program Aktif: {is_fan_active}, "
                 f"Fan: {'Açık' if device_status.fan_status else 'Kapalı'}"
             )
-    
-    def _get_active_schedule(self, room):
-        """Oda için aktif programı bul"""
-        from schedules.models import RoomSchedule
-        try:
-            active_room_schedule = RoomSchedule.objects.get(room_id=room, is_active=True)
-            return active_room_schedule.schedule_id
-        except RoomSchedule.DoesNotExist:
-            return None
     
     def _get_current_time_slot(self, schedule):
         """Şu anki gün ve saat için program ayarlarını bul"""
@@ -235,6 +241,16 @@ class DecisionEngine:
                 logger.warning(f"Oda {room_id} için MQTT fan komutu gönderilemedi")
         except DeviceStatus.DoesNotExist:
             logger.warning(f"Oda {room_id} için cihaz durumu bulunamadı")
+
+
+    def _get_active_schedule(self, room):
+        """Oda için aktif programı bul"""
+        from schedules.models import RoomSchedule
+        try:
+            active_room_schedule = RoomSchedule.objects.get(room_id=room, is_active=True)
+            return active_room_schedule.schedule_id
+        except RoomSchedule.DoesNotExist:
+            return None
 
 # Singleton instance
 decision_engine = DecisionEngine()

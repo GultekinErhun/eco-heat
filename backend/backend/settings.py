@@ -94,7 +94,7 @@ MQTT_PASSWORD = '123'  # Eğer authentication gerekiyorsa
 
 # Decision Engine ayarları
 DECISION_ENGINE = {
-    'CHECK_INTERVAL': 60,  # saniye
+    'CHECK_INTERVAL': 1j,  # saniye
     'TEMPERATURE_THRESHOLD': 2.0,  # ±°C
 }
 

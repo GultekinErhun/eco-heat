@@ -82,9 +82,9 @@ class RoomViewSet(viewsets.ModelViewSet):
         3. SCHEDULE (program kontrolü)
         """
         try:
-            room = self.get_object()  # Bu, pk parametresini kullanarak Room nesnesini otomatik olarak alır
+            room = self.get_object()
             
-            # Kullanıcının yetkisini kontrol et (zaten get_queryset ile filtrelenmiş olsa da)
+            # Kullanıcının yetkisini kontrol et
             if room.user != request.user and not request.user.is_staff:
                 return Response({"error": "Bu odayı kontrol etme yetkiniz yok"}, status=403)
             
@@ -137,6 +137,10 @@ class RoomViewSet(viewsets.ModelViewSet):
                         "success": False,
                         "message": "Bu oda için aktif program bulunamadı. Lütfen önce bir program seçin."
                     }, status=400)
+                
+                # Decision Engine'i program modunda çalıştırmak için hızlı bir güncelleme yap
+                from schedules.decision_engine import decision_engine
+                decision_engine._process_room(room)
                 
                 message = "Isıtma sistemi program kontrolüne alındı"
             
@@ -220,6 +224,10 @@ class RoomViewSet(viewsets.ModelViewSet):
                         "message": "Bu oda için aktif program bulunamadı. Lütfen önce bir program seçin."
                     }, status=400)
                 
+                # Decision Engine'i program modunda çalıştırmak için hızlı bir güncelleme yap
+                from schedules.decision_engine import decision_engine
+                decision_engine._process_room(room)
+                
                 message = "Fan sistemi program kontrolüne alındı"
             
             # Değişiklikleri kaydet
@@ -237,7 +245,36 @@ class RoomViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return Response({"error": str(e)}, status=500)
         
-
+    @action(detail=True, methods=['get'])
+    def control_modes(self, request, pk=None):
+        """
+        Odanın kontrol modlarını ve cihaz durumunu döndürür
+        """
+        room = self.get_object()
+        
+        # Cihaz durumunu al
+        device_status, created = DeviceStatus.objects.get_or_create(room=room)
+        
+        # Aktif program kontrolünü al
+        from schedules.models import RoomSchedule
+        active_schedule = RoomSchedule.objects.filter(room_id=room, is_active=True).first()
+        
+        return Response({
+            "room_id": room.id,
+            "room_name": room.name,
+            "heating_control": {
+                "mode": device_status.heating_control_mode,
+                "valve_status": device_status.valve_status,
+                "active_schedule": active_schedule.schedule_id.name if active_schedule else None
+            },
+            "fan_control": {
+                "mode": device_status.fan_control_mode,
+                "fan_status": device_status.fan_status,
+                "active_schedule": active_schedule.schedule_id.name if active_schedule else None
+            },
+            "last_updated": device_status.last_updated
+        })
+    
     @action(detail=True, methods=['get'])
     def room_details(self, request, pk=None):
         """
