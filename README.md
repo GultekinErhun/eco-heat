@@ -29,17 +29,12 @@ python manage.py mqtt_client start
 
 http://localhost:8000/api/sensors/rooms/1/control_valve/
 {
-  "valve_status": false
-}
-{
-  "valve_status": true
+  "mode": "on"  // "on", "off" veya "schedule" değerlerinden biri olabilir
 }
 
 http://localhost:8000/api/rooms/1/control_fan/
 {
-  "fan_status": true
-}{
-  "fan_status": false
+  "mode": "on"  // "on", "off" veya "schedule" değerlerinden biri olabilir
 }
 
 
@@ -95,3 +90,22 @@ http://localhost:8000/api/schedules/schedule-times/5/
 {"desired_temperature": 23.5, "is_fan_active": true}
 # Belirli bir programı silme
 DELETE http://localhost:8000/api/schedules/schedules/1/
+
+
+# Odanın kontrol modlarını ve cihaz durumunu döndürür
+http://localhost:8000/api/sensors/rooms/1/control_modes/ 
+{
+    "room_id": 1,
+    "room_name": "Oda 1",
+    "heating_control": {
+        "mode": "schedule",
+        "valve_status": false,
+        "active_schedule": "Kış Hafta Sonu"
+    },
+    "fan_control": {
+        "mode": "manual",
+        "fan_status": false,
+        "active_schedule": "Kış Hafta Sonu"
+    },
+    "last_updated": "2025-05-21T14:50:25.512398Z"
+}

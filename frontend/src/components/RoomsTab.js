@@ -7,6 +7,7 @@ const RoomsTab = () => {
   const [rooms, setRooms] = useState([]);  // Başlangıçta boş dizi
   const [activeRoom, setActiveRoom] = useState(null);
   const [roomData, setRoomData] = useState(null);
+  const [controlModes, setControlModes] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -66,46 +67,64 @@ const RoomsTab = () => {
     fetchRooms();
   }, []);
 
-  // Aktif oda değiştiğinde oda detaylarını getir
+  // Aktif oda değiştiğinde oda detaylarını ve kontrol modlarını getir
   useEffect(() => {
     if (!activeRoom) return;
 
-    const fetchRoomDetails = async () => {
+    const fetchRoomData = async () => {
       try {
         setLoading(true);
-        const response = await api.roomApi.getRoomDetails(activeRoom);
-        console.log("Oda detayları:", response);
-        setRoomData(response);
+        
+        // Oda detaylarını getir
+        const detailsResponse = await api.roomApi.getRoomDetails(activeRoom);
+        console.log("Oda detayları:", detailsResponse);
+        setRoomData(detailsResponse);
+        
+        // Kontrol modlarını getir
+        const modesResponse = await api.roomApi.getRoomControlModes(activeRoom);
+        console.log("Kontrol modları:", modesResponse);
+        setControlModes(modesResponse);
+        
         setLoading(false);
       } catch (err) {
-        console.error('Oda detaylarını getirirken hata oluştu:', err);
-        setError('Oda detayları yüklenemedi.');
+        console.error('Oda verilerini getirirken hata oluştu:', err);
+        setError('Oda verileri yüklenemedi.');
         setLoading(false);
       }
     };
 
-    fetchRoomDetails();
+    fetchRoomData();
   }, [activeRoom]);
 
   // Isıtma kontrolü
-  const handleHeatingControl = async (status) => {
+  const handleHeatingControl = async (mode) => {
     try {
-      await api.roomApi.controlValve(activeRoom, status);
+      await api.roomApi.controlValve(activeRoom, mode);
+      
       // Oda verilerini güncelle
-      const response = await api.roomApi.getRoomDetails(activeRoom);
-      setRoomData(response);
+      const detailsResponse = await api.roomApi.getRoomDetails(activeRoom);
+      setRoomData(detailsResponse);
+      
+      // Kontrol modlarını güncelle
+      const modesResponse = await api.roomApi.getRoomControlModes(activeRoom);
+      setControlModes(modesResponse);
     } catch (err) {
       console.error('Isıtma kontrolünde hata:', err);
     }
   };
 
   // Fan kontrolü
-  const handleFanControl = async (status) => {
+  const handleFanControl = async (mode) => {
     try {
-      await api.roomApi.controlFan(activeRoom, status);
+      await api.roomApi.controlFan(activeRoom, mode);
+      
       // Oda verilerini güncelle
-      const response = await api.roomApi.getRoomDetails(activeRoom);
-      setRoomData(response);
+      const detailsResponse = await api.roomApi.getRoomDetails(activeRoom);
+      setRoomData(detailsResponse);
+      
+      // Kontrol modlarını güncelle
+      const modesResponse = await api.roomApi.getRoomControlModes(activeRoom);
+      setControlModes(modesResponse);
     } catch (err) {
       console.error('Fan kontrolünde hata:', err);
     }
@@ -186,19 +205,41 @@ const RoomsTab = () => {
                   <h3 className="text-lg font-medium mb-2">Heating</h3>
                   <div className="flex flex-wrap space-x-2 mt-4">
                     <button 
-                      className={`px-3 py-1 mb-1 ${!(roomData.device_status && roomData.device_status.valve_status) ? 'bg-green-500 text-white' : 'bg-gray-200'} rounded`}
-                      onClick={() => handleHeatingControl(false)}
+                      className={`px-3 py-1 mb-1 ${
+                        controlModes && controlModes.heating_control.mode === 'manual' && !roomData.device_status.valve_status 
+                          ? 'bg-green-500 text-white' 
+                          : 'bg-gray-200'
+                      } rounded`}
+                      onClick={() => handleHeatingControl('off')}
                     >
                       Off
                     </button>
-                    <button className="px-3 py-1 mb-1 bg-gray-200 rounded">Schedule</button>
                     <button 
-                      className={`px-3 py-1 mb-1 ${roomData.device_status && roomData.device_status.valve_status ? 'bg-green-500 text-white' : 'bg-gray-200'} rounded`}
-                      onClick={() => handleHeatingControl(true)}
+                      className={`px-3 py-1 mb-1 ${
+                        controlModes && controlModes.heating_control.mode === 'schedule' 
+                          ? 'bg-green-500 text-white' 
+                          : 'bg-gray-200'
+                      } rounded`}
+                      onClick={() => handleHeatingControl('schedule')}
+                    >
+                      Schedule
+                    </button>
+                    <button 
+                      className={`px-3 py-1 mb-1 ${
+                        controlModes && controlModes.heating_control.mode === 'manual' && roomData.device_status.valve_status 
+                          ? 'bg-green-500 text-white' 
+                          : 'bg-gray-200'
+                      } rounded`}
+                      onClick={() => handleHeatingControl('on')}
                     >
                       On
                     </button>
                   </div>
+                  {controlModes && controlModes.heating_control.mode === 'schedule' && (
+                    <div className="mt-2 text-sm text-gray-600">
+                      Active Schedule: {controlModes.heating_control.active_schedule || 'None'}
+                    </div>
+                  )}
                   <div className="h-1 bg-green-500 rounded mt-2"></div>
                 </div>
               </div>
@@ -234,19 +275,41 @@ const RoomsTab = () => {
                   <h3 className="text-lg font-medium mb-2">Fans</h3>
                   <div className="flex flex-wrap space-x-2 mt-4">
                     <button 
-                      className={`px-3 py-1 mb-1 ${!(roomData.device_status && roomData.device_status.fan_status) ? 'bg-green-500 text-white' : 'bg-gray-200'} rounded`}
-                      onClick={() => handleFanControl(false)}
+                      className={`px-3 py-1 mb-1 ${
+                        controlModes && controlModes.fan_control.mode === 'manual' && !roomData.device_status.fan_status 
+                          ? 'bg-green-500 text-white' 
+                          : 'bg-gray-200'
+                      } rounded`}
+                      onClick={() => handleFanControl('off')}
                     >
                       Off
                     </button>
-                    <button className="px-3 py-1 mb-1 bg-gray-200 rounded">Schedule</button>
                     <button 
-                      className={`px-3 py-1 mb-1 ${roomData.device_status && roomData.device_status.fan_status ? 'bg-green-500 text-white' : 'bg-gray-200'} rounded`}
-                      onClick={() => handleFanControl(true)}
+                      className={`px-3 py-1 mb-1 ${
+                        controlModes && controlModes.fan_control.mode === 'schedule' 
+                          ? 'bg-green-500 text-white' 
+                          : 'bg-gray-200'
+                      } rounded`}
+                      onClick={() => handleFanControl('schedule')}
+                    >
+                      Schedule
+                    </button>
+                    <button 
+                      className={`px-3 py-1 mb-1 ${
+                        controlModes && controlModes.fan_control.mode === 'manual' && roomData.device_status.fan_status 
+                          ? 'bg-green-500 text-white' 
+                          : 'bg-gray-200'
+                      } rounded`}
+                      onClick={() => handleFanControl('on')}
                     >
                       On
                     </button>
                   </div>
+                  {controlModes && controlModes.fan_control.mode === 'schedule' && (
+                    <div className="mt-2 text-sm text-gray-600">
+                      Active Schedule: {controlModes.fan_control.active_schedule || 'None'}
+                    </div>
+                  )}
                   <div className="h-1 bg-green-500 rounded mt-2"></div>
                 </div>
               </div>
