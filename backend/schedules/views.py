@@ -1,7 +1,7 @@
 from rest_framework import viewsets, permissions, status 
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser,AllowAny
 from django.db import transaction
 
 from .models import Schedule, Day, Hour, ScheduleTime, RoomSchedule
@@ -29,6 +29,8 @@ class HourViewSet(viewsets.ModelViewSet):
     queryset = Hour.objects.all()
     serializer_class = HourSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
 
 
 class ScheduleViewSet(viewsets.ModelViewSet):
@@ -282,3 +284,4 @@ class RoomScheduleViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         except RoomSchedule.DoesNotExist:
             return Response({"message": "No schedule assigned to this room"}, status=status.HTTP_404_NOT_FOUND)
+        

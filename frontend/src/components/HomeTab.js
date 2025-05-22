@@ -15,16 +15,13 @@ const HomeTab = () => {
   return (
     <div className="p-4 bg-gray-100 overflow-auto" style={{ maxHeight: 'calc(100vh - 48px)' }}>
       <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-medium">24 March 2024<br />Monday</h1>
+        <h1 className="text-xl font-medium">22 May 2024<br />Thursday</h1>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Left Column - Status Cards */}
         <div className="space-y-4">
-          <div className="bg-white p-3 rounded-lg shadow">
-            <h3 className="text-lg font-medium mb-2">Room Temp</h3>
-            <div className="text-3xl font-bold">23°C</div>
-          </div>
+
 
           <div className="bg-white p-3 rounded-lg shadow">
             <h3 className="text-lg font-medium mb-2">Outside Temp</h3>
@@ -38,7 +35,7 @@ const HomeTab = () => {
 
           <div className="bg-white p-3 rounded-lg shadow">
             <h3 className="text-lg font-medium mb-2">Active Rooms</h3>
-            <div className="text-3xl font-bold">1/2</div>
+            <div className="text-3xl font-bold">3/5-</div>
           </div>
         </div>
 
@@ -86,7 +83,7 @@ const HomeTab = () => {
           <div className="bg-white p-3 rounded-lg shadow">
             <h3 className="text-lg font-medium mb-3">Notifications</h3>
             <div className="bg-gray-100 p-3 rounded text-sm">
-              Living Room Fan has connection problems
+              No Notifications
             </div>
           </div>
         </div>

@@ -9,7 +9,7 @@ const REGISTER_URL = `${BASE_URL}register/`;
 const LOGOUT_URL = `${BASE_URL}logout/`;
 const NOTES_URL = `${BASE_URL}todos/`;
 const AUTHENTICATED_URL = `${BASE_URL}authenticated/`;
-const ROOMS_URL = `${SENSORS_URL}rooms/`;
+const ROOMS_URL = `${SENSORS_URL}/rooms/`;
 
 axios.defaults.withCredentials = true; 
 
@@ -174,7 +174,7 @@ export const scheduleApi = {
     // Tüm programları getir
     getSchedules: async () => {
         try {
-            const response = await schedulesApi.get('/');
+            const response = await schedulesApi.get('/schedules/');
             return response.data;
         } catch (error) {
             console.error('Programları getirirken hata oluştu:', error);
@@ -185,7 +185,7 @@ export const scheduleApi = {
     // Belirli bir programın detaylarını getir
     getScheduleDetails: async (scheduleId) => {
         try {
-            const response = await schedulesApi.get(`/${scheduleId}/detailed/`);
+            const response = await schedulesApi.get(`/schedules/${scheduleId}/detailed/`);
             return response.data;
         } catch (error) {
             console.error(`Program detaylarını getirirken hata oluştu (ID: ${scheduleId}):`, error);
@@ -196,7 +196,7 @@ export const scheduleApi = {
     // Yeni program oluştur
     createSchedule: async (name, description = '') => {
         try {
-            const response = await schedulesApi.post('/', {
+            const response = await schedulesApi.post('/schedules/', {
                 name,
                 description
             });
@@ -210,7 +210,7 @@ export const scheduleApi = {
     // Programı güncelle
     updateSchedule: async (scheduleId, data) => {
         try {
-            const response = await schedulesApi.put(`/${scheduleId}/`, data);
+            const response = await schedulesApi.put(`/schedules/${scheduleId}/`, data);
             return response.data;
         } catch (error) {
             console.error(`Programı güncellerken hata oluştu (ID: ${scheduleId}):`, error);
@@ -221,7 +221,7 @@ export const scheduleApi = {
     // Programı sil
     deleteSchedule: async (scheduleId) => {
         try {
-            await schedulesApi.delete(`/${scheduleId}/`);
+            await schedulesApi.delete(`/schedules/${scheduleId}/`);
             return true;
         } catch (error) {
             console.error(`Programı silerken hata oluştu (ID: ${scheduleId}):`, error);
@@ -232,7 +232,7 @@ export const scheduleApi = {
     // Programı bir odaya ata
     assignScheduleToRoom: async (scheduleId, roomId) => {
         try {
-            const response = await schedulesApi.post(`/${scheduleId}/assign_to_room/`, {
+            const response = await schedulesApi.post(`/schedules/${scheduleId}/assign_to_room/`, {
                 room_id: roomId
             });
             return response.data;
@@ -245,7 +245,7 @@ export const scheduleApi = {
     // Program için zaman dilimlerini güncelle
     updateTimeSlots: async (scheduleId, timeSlots) => {
         try {
-            const response = await schedulesApi.post(`/${scheduleId}/update_time_slots/`, {
+            const response = await schedulesApi.post(`/schedules/${scheduleId}/update_time_slots/`, {
                 time_slots: timeSlots
             });
             return response.data;
@@ -261,11 +261,7 @@ export const dayApi = {
     // Tüm günleri getir
     getDays: async () => {
         try {
-            const response = await axios.get(`${BASE_URL}days/`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
+            const response = await schedulesApi.get('/days/');
             return response.data;
         } catch (error) {
             console.error('Günleri getirirken hata oluştu:', error);
@@ -279,11 +275,7 @@ export const hourApi = {
     // Tüm saat dilimlerini getir
     getHours: async () => {
         try {
-            const response = await axios.get(`${BASE_URL}hours/`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
+            const response = await schedulesApi.get('/hours/');
             return response.data;
         } catch (error) {
             console.error('Saat dilimlerini getirirken hata oluştu:', error);
@@ -294,13 +286,9 @@ export const hourApi = {
     // Yeni saat dilimi oluştur
     createHour: async (startTime, endTime) => {
         try {
-            const response = await axios.post(`${BASE_URL}hours/`, {
+            const response = await schedulesApi.post('/hours/', {
                 start_time: startTime,
                 end_time: endTime
-            }, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
             });
             return response.data;
         } catch (error) {
@@ -312,11 +300,7 @@ export const hourApi = {
     // Saat dilimini sil
     deleteHour: async (hourId) => {
         try {
-            await axios.delete(`${BASE_URL}hours/${hourId}/`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
+            await schedulesApi.delete(`/hours/${hourId}/`);
             return true;
         } catch (error) {
             console.error(`Saat dilimini silerken hata oluştu (ID: ${hourId}):`, error);
@@ -330,11 +314,7 @@ export const scheduleTimeApi = {
     // Belirli bir program için zaman ayarlarını getir
     getScheduleTimes: async (scheduleId) => {
         try {
-            const response = await axios.get(`${BASE_URL}schedule-times/by_schedule/?schedule_id=${scheduleId}`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
+            const response = await schedulesApi.get(`/schedule-times/by_schedule/?schedule_id=${scheduleId}`);
             return response.data;
         } catch (error) {
             console.error(`Program zaman ayarlarını getirirken hata oluştu (ID: ${scheduleId}):`, error);
@@ -345,16 +325,12 @@ export const scheduleTimeApi = {
     // Belirli bir gün için zaman ayarlarını getir
     getScheduleTimesByDay: async (dayId, scheduleId = null) => {
         try {
-            let url = `${BASE_URL}schedule-times/by_day/?day_id=${dayId}`;
+            let url = `/schedule-times/by_day/?day_id=${dayId}`;
             if (scheduleId) {
                 url += `&schedule_id=${scheduleId}`;
             }
             
-            const response = await axios.get(url, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
+            const response = await schedulesApi.get(url);
             return response.data;
         } catch (error) {
             console.error(`Gün için zaman ayarlarını getirirken hata oluştu (Day ID: ${dayId}):`, error);
@@ -368,11 +344,7 @@ export const roomScheduleApi = {
     // Tüm oda-program ilişkilerini getir
     getRoomSchedules: async () => {
         try {
-            const response = await axios.get(`${BASE_URL}room-schedules/`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
+            const response = await schedulesApi.get('/room-schedules/');
             return response.data;
         } catch (error) {
             console.error('Oda-program ilişkilerini getirirken hata oluştu:', error);
@@ -383,11 +355,7 @@ export const roomScheduleApi = {
     // Belirli bir oda için program ilişkisini getir
     getRoomScheduleByRoom: async (roomId) => {
         try {
-            const response = await axios.get(`${BASE_URL}room-schedules/by_room/?room_id=${roomId}`, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
+            const response = await schedulesApi.get(`/room-schedules/by_room/?room_id=${roomId}`);
             return response.data;
         } catch (error) {
             console.error(`Oda için program ilişkisini getirirken hata oluştu (ID: ${roomId}):`, error);
@@ -398,14 +366,10 @@ export const roomScheduleApi = {
     // Yeni oda-program ilişkisi oluştur
     createRoomSchedule: async (roomId, scheduleId) => {
         try {
-            const response = await axios.post(`${BASE_URL}room-schedules/`, {
+            const response = await schedulesApi.post('/room-schedules/', {
                 room_id: roomId,
                 schedule_id: scheduleId,
                 is_active: true
-            }, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
             });
             return response.data;
         } catch (error) {
@@ -417,11 +381,7 @@ export const roomScheduleApi = {
     // Oda-program ilişkisini güncelle
     updateRoomSchedule: async (roomScheduleId, data) => {
         try {
-            const response = await axios.patch(`${BASE_URL}room-schedules/${roomScheduleId}/`, data, {
-                headers: {
-                    Authorization: `Bearer ${localStorage.getItem('token')}`
-                }
-            });
+            const response = await schedulesApi.patch(`/room-schedules/${roomScheduleId}/`, data);
             return response.data;
         } catch (error) {
             console.error(`Oda-program ilişkisini güncellerken hata oluştu (ID: ${roomScheduleId}):`, error);
